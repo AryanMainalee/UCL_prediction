@@ -4,7 +4,10 @@ __pycache__/
 venv/
 env/
 
-# Data files (keep raw/processed local unless small)
+# IDE / Editor Settings
+.vscode/
+
+# Data files
 data/raw/*
 data/processed/*
 !data/raw/.gitkeep
