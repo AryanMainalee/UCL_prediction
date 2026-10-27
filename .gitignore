@@ -16,3 +16,6 @@ data/processed/*
 # Outputs and logs
 outputs/*
 .DS_Store
+
+#enviroment file
+.env
