@@ -1,6 +1,15 @@
 import pandas as pd
 import os
+from pathlib import Path
 
+def export_processed_data(df: pd.DataFrame, filename: str):
+    output_dir = Path(__file__).resolve().parent.parent / "data" / "processed"
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    output_path = output_dir / filename
+    df.to_csv(output_path, index=False)
+
+    print(f"Exported processed data to {output_path}")
 output_path = r"C:\Datascience\UCL_prediction\data\processed"
 
 def load_team_details(filepath:str) -> pd.DataFrame:
