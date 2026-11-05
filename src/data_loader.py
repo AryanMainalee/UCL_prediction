@@ -104,13 +104,14 @@ def load_game_details(filepath:str) -> pd.DataFrame:
     for cols in goal_columns:
         df_cleaned = df_cleaned[df_cleaned[cols] >= 0]
         
-    df_cleaned["competition_type"] = df["competition_type"].str.strip()
     
-    df_cleaned = df_cleaned[id_columns + goal_columns + "competition_type"].astype(int)
+    df_cleaned = df_cleaned[id_columns + goal_columns].astype(int)
         
     print(f"Dropped {before - len(df_cleaned)} rows with invalid Game ID, club ID or goals")
     
     df_cleaned["competition_id"] = df["competition_id"].str.strip().str.lower()
+    
+    df_cleaned["competition_type"] = df["competition_type"].str.strip()
     
     df_cleaned["season"] = pd.to_numeric(df["season"], errors="coerce")
     
