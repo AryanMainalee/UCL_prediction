@@ -75,6 +75,7 @@ def load_game_details(filepath:str) -> pd.DataFrame:
         "game_id", "competition_id", "season", "date", 
         "home_club_id", "away_club_id", 
         "home_club_goals", "away_club_goals",
+        "competition_type"
     ]
         
     #throwing an error if column doesn't exist to prevent missing column later
@@ -102,8 +103,10 @@ def load_game_details(filepath:str) -> pd.DataFrame:
         df_cleaned = df_cleaned[df_cleaned[cols] > 0]
     for cols in goal_columns:
         df_cleaned = df_cleaned[df_cleaned[cols] >= 0]
+        
+    df_cleaned["competition_type"] = df["competition_type"].str.strip()
     
-    df_cleaned = df_cleaned[id_columns + goal_columns].astype(int)
+    df_cleaned = df_cleaned[id_columns + goal_columns + "competition_type"].astype(int)
         
     print(f"Dropped {before - len(df_cleaned)} rows with invalid Game ID, club ID or goals")
     
