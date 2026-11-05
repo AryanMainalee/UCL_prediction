@@ -65,7 +65,7 @@ def load_game_details(filepath:str) -> pd.DataFrame:
     required_columns = [
         "game_id", "competition_id", "season", "date", 
         "home_club_id", "away_club_id", 
-        "home_club_goals", "away_club_goals"
+        "home_club_goals", "away_club_goals",
     ]
         
     #throwing an error if column doesn't exist to prevent missing column later
@@ -114,3 +114,34 @@ def load_game_details(filepath:str) -> pd.DataFrame:
     df_cleaned = df_cleaned.sort_values(by="game_id", ascending=True)
     
     return df_cleaned.reset_index(drop= True)
+
+
+def load_competition_details(filepath:str) -> pd.DataFrame:
+    if not os.path.exists(filepath):
+        raise ValueError(f"No file in {filepath}.")
+                
+    df = pd.read_csv(filepath)
+    
+    required_columns = [
+        "competition_id", "competition_code",
+        "name", "sub_type",
+        "type", "domestic_league_code"
+    ]
+    
+    missing_columns = [col for col in required_columns if col not in df.columns]
+    if missing_columns:
+            raise ValueError(f"Missing Column(s): {missing_columns}.")
+    
+    df_cleaned = df[required_columns].copy()
+    
+    for cols in required_columns:
+        df_cleaned[cols] = df[cols].str.strip().astype(str)
+            
+    dupes = df_cleaned["competition_id"].duplicated().sum()
+    if dupes:
+        df_cleaned.drop_duplicates(subtype="competition_id", keep="first")
+        print(f"Dropped {dupes} duplicate rows.")
+        
+    df_cleaned.sort_values(by="competition_id", ascending=True)
+    
+    return df_cleaned.reset_index(drop=True)
